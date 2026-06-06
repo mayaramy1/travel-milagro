@@ -14,7 +14,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--off-white);color:var(--text-dark);overflow-x:hidden;cursor:none}
+body{font-family:'Outfit',sans-serif;background:var(--off-white);color:var(--text-dark);overflow-x:hidden;cursor:none}@media(hover:none),(pointer:coarse){body{cursor:auto}}
 
 /* CURSOR */
 #cur{position:fixed;width:10px;height:10px;background:var(--purple);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
@@ -53,7 +53,7 @@ nav.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(18px);padding
 .hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(237,230,247,.12);color:rgba(255,255,255,.9);border:1px solid rgba(155,111,208,.4);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;padding:8px 18px;font-weight:600;margin-bottom:32px;backdrop-filter:blur(6px);opacity:0;animation:fadeUp .9s .2s forwards}
 .hero-badge span{width:6px;height:6px;background:var(--purple-light);border-radius:50%}
 h1.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(56px,7.5vw,100px);font-weight:300;line-height:.95;color:#fff;margin-bottom:28px;opacity:0;animation:fadeUp .9s .4s forwards;}
-h1.hero-title em{font-style:italic;color:var(--purple-light);display:block}
+h1.hero-title em{font-style:italic;color:var(--purple-deep);display:block;}
 .hero-sub{font-size:16px;font-weight:300;line-height:1.75;color:rgba(255,255,255,.7);max-width:480px;margin-bottom:48px;opacity:0;animation:fadeUp .9s .6s forwards}
 .hero-sub b{color:var(--purple-light);font-weight:500}
 .hero-btns{display:flex;gap:18px;align-items:center;opacity:0;animation:fadeUp .9s .8s forwards}
@@ -125,83 +125,146 @@ h2.sec-title em{font-style:italic;color:var(--purple)}
 
 .srv-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px}
 
-/* Each service panel */
-.srv-panel{background:var(--white);border:1px solid rgba(107,63,160,.1);overflow:hidden;transition:box-shadow .3s}
-.srv-panel:hover{box-shadow:0 8px 40px rgba(107,63,160,.12)}
+/* ══ SERVICE PANEL ══ */
+.srv-panel{
+  background:var(--white);
+  overflow:hidden;
+  transition:transform .35s ease, box-shadow .35s ease;
+  box-shadow:0 2px 16px rgba(123,37,130,.07);
+  border-radius:3px;
+  position:relative;
+}
+.srv-panel::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  border-radius:3px;
+  box-shadow:inset 0 0 0 1px rgba(123,37,130,.08);
+  transition:box-shadow .35s;
+}
+.srv-panel:hover{transform:translateY(-4px);box-shadow:0 20px 52px rgba(123,37,130,.16)}
+.srv-panel:hover::after{box-shadow:inset 0 0 0 1.5px var(--purple)}
 
-/* Panel header (clickable) */
+/* Header */
 .srv-panel-hdr{
   display:flex;align-items:center;gap:0;cursor:pointer;
-  background:var(--purple);color:#fff;
-  transition:background .25s;user-select:none;
+  background:linear-gradient(110deg,var(--purple-deep) 0%,var(--purple) 100%);
+  color:#fff;transition:all .3s;user-select:none;position:relative;overflow:hidden;
 }
-.srv-panel-hdr:hover{background:var(--purple-deep)}
+.srv-panel-hdr::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(110deg,var(--purple) 0%,#a03590 100%);
+  opacity:0;transition:opacity .3s;
+}
+.srv-panel-hdr:hover::before{opacity:1}
 .srv-hdr-icon{
-  width:56px;height:56px;display:flex;align-items:center;justify-content:center;
-  font-size:22px;background:rgba(0,0,0,.15);flex-shrink:0;
+  width:60px;height:60px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;background:rgba(0,0,0,.18);flex-shrink:0;
+  position:relative;z-index:1;transition:transform .3s,font-size .3s;
 }
-.srv-hdr-text{flex:1;padding:0 16px}
-.srv-hdr-title{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;line-height:1.2}
-.srv-hdr-count{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;opacity:.65;margin-top:3px}
-.srv-hdr-arrow{width:40px;height:56px;display:flex;align-items:center;justify-content:center;font-size:11px;opacity:.7;transition:transform .35s;flex-shrink:0}
+.srv-panel-hdr:hover .srv-hdr-icon{transform:scale(1.12);font-size:26px}
+.srv-hdr-text{flex:1;padding:0 18px;position:relative;z-index:1}
+.srv-hdr-title{
+  font-family:'Cormorant Garamond',serif;font-size:20px;
+  font-weight:600;line-height:1.2;letter-spacing:.2px;
+}
+.srv-hdr-count{
+  font-size:9px;letter-spacing:2.5px;text-transform:uppercase;
+  opacity:.65;margin-top:5px;
+}
+.srv-hdr-arrow{
+  width:44px;height:60px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;opacity:.75;
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  flex-shrink:0;position:relative;z-index:1;
+}
 .srv-panel.open .srv-hdr-arrow{transform:rotate(180deg)}
 
-/* Image strip */
-.srv-panel-img{height:140px;position:relative;overflow:hidden}
-.srv-panel-img-bg{position:absolute;inset:0;transition:transform .5s}
-.srv-panel:hover .srv-panel-img-bg{transform:scale(1.04)}
-.img-bg-1{background-image: url(images/giza-pyramids-cairo-egypt-with-palm.webp); background-position: center; background-size: cover;}
-.img-bg-2{background-image: url(images/6-1.jpg); background-position: center; background-size: cover;}
-.img-bg-3{background-image: url(images/531812366.jpg); background-position: center; background-size: cover;}
-.img-bg-4{background-image: url(images/images.jpg); background-position: center; background-size: cover;}
-.img-bg-5{background-image: url(images/Safaga-Shore-Excursions-Egypt-Tours-Portal.jpg); background-position: center; background-size: cover;}
-.img-bg-6{background-image: url(images/Fun-Facts-About-Diving-Exploring-the-Depths-of-Mystery-and-Adventure-1-930x620.webp); background-position: center; background-size: cover;}
-.srv-panel-img::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,.12)}
-.srv-img-lbl{position:absolute;bottom:10px;left:14px;z-index:1;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.65)}
+/* Image */
+.srv-panel-img{height:150px;position:relative;overflow:hidden}
+.srv-panel-img-bg{
+  position:absolute;inset:0;transition:transform .6s ease;
+}
+.srv-panel:hover .srv-panel-img-bg{transform:scale(1.07)}
+.img-bg-1{background-image:url(images/giza-pyramids-cairo-egypt-with-palm.webp);background-position:center;background-size:cover}
+.img-bg-2{background-image:url(images/6-1.jpg);background-position:center;background-size:cover}
+.img-bg-3{background-image:url(images/531812366.jpg);background-position:center;background-size:cover}
+.img-bg-4{background-image:url(images/images.jpg);background-position:center;background-size:cover}
+.img-bg-5{background-image:url(images/Safaga-Shore-Excursions-Egypt-Tours-Portal.jpg);background-position:center;background-size:cover}
+.img-bg-6{background-image:url(images/Fun-Facts-About-Diving-Exploring-the-Depths-of-Mystery-and-Adventure-1-930x620.webp);background-position:center;background-size:cover}
+.srv-panel-img::before{
+  content:'';position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.45) 100%);
+}
+.srv-img-lbl{
+  position:absolute;bottom:10px;left:14px;z-index:2;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(255,255,255,.8);font-weight:500;
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+}
 
 /* Dropdown list */
 .srv-panel-list{
   max-height:0;overflow:hidden;
-  transition:max-height .45s cubic-bezier(.4,0,.2,1);
+  transition:max-height .5s cubic-bezier(.4,0,.2,1);
   background:var(--white);
 }
-.srv-panel.open .srv-panel-list{max-height:700px; pointer-events: auto;}
+.srv-panel.open .srv-panel-list{max-height:800px;pointer-events:auto}
 
+/* Individual item */
 .srv-item{
-  display:grid;
-  grid-template-columns:32px 1fr auto;
-  align-items:center;gap:0;
-  border-bottom:1px solid rgba(107,63,160,.07);
-  cursor:pointer;
-  transition:all .2s;
-  text-decoration:none;
+  display:flex;align-items:stretch;
+  border-bottom:1px solid rgba(123,37,130,.06);
+  cursor:pointer;transition:all .22s ease;
+  text-decoration:none;position:relative;overflow:hidden;
+}
+/* left accent bar */
+.srv-item::before{
+  content:'';
+  position:absolute;left:0;top:0;bottom:0;width:0;
+  background:linear-gradient(180deg,var(--purple),#a03590);
+  transition:width .22s ease;
+  border-radius:0 2px 2px 0;
 }
 .srv-item:last-child{border-bottom:none}
-.srv-item:hover{background:var(--purple-pale)}
-.srv-item:hover .srv-item-num{background:var(--purple);color:#fff}
-.srv-item:hover .srv-item-name{color:var(--purple);padding-left:18px}
-.srv-item:hover .srv-item-pdf{opacity:1;transform:translateX(0)}
+.srv-item:hover{background:linear-gradient(90deg,rgba(123,37,130,.05) 0%,rgba(237,230,247,.3) 100%)}
+.srv-item:hover::before{width:3px}
+.srv-item:hover .srv-item-num{color:var(--purple);background:rgba(123,37,130,.1)}
+.srv-item:hover .srv-item-name{color:var(--purple-deep);transform:translateX(6px)}
+.srv-item:hover .srv-item-badge{opacity:1;transform:translateX(0) scale(1)}
+.srv-item:hover .srv-item-chevron{opacity:1;transform:translateX(3px)}
 
 .srv-item-num{
-  width:32px;height:48px;
+  width:38px;min-height:54px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:700;color:var(--purple-light);
-  background:rgba(107,63,160,.06);
-  transition:all .2s;flex-shrink:0;
-  font-family:'Cormorant Garamond',serif;font-size:14px;
+  font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:700;
+  color:rgba(123,37,130,.25);
+  background:rgba(123,37,130,.03);
+  border-right:1px solid rgba(123,37,130,.06);
+  transition:all .22s ease;
 }
 .srv-item-name{
-  padding:12px 14px;font-size:13px;font-weight:400;color:var(--text-mid);
-  line-height:1.4;transition:all .2s;
+  flex:1;padding:15px 16px;
+  font-size:13.5px;font-weight:400;color:var(--text-mid);
+  line-height:1.4;transition:all .22s ease;
 }
-.srv-item-pdf{
-  padding:0 14px;display:flex;align-items:center;gap:6px;
-  font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--purple);font-weight:700;opacity:0;
-  transform:translateX(6px);transition:all .2s;flex-shrink:0;
-  white-space:nowrap;
+.srv-item-actions{
+  display:flex;align-items:center;gap:8px;padding:0 14px;flex-shrink:0;
 }
-.srv-item-pdf svg{width:14px;height:14px;fill:currentColor}
+.srv-item-badge{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(123,37,130,.08);color:var(--purple);
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+  padding:5px 10px;border-radius:20px;
+  opacity:0;transform:translateX(10px) scale(.9);
+  transition:all .25s ease;white-space:nowrap;
+}
+.srv-item-badge svg{width:11px;height:11px;fill:currentColor;flex-shrink:0}
+.srv-item-chevron{
+  font-size:16px;color:rgba(123,37,130,.35);
+  opacity:0;transform:translateX(-3px);
+  transition:all .22s ease;font-weight:300;
+}
 
 /* TOURS */
 #tours{background:var(--white)}
@@ -320,6 +383,12 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
 .pdf-dl-btn:hover{background:var(--purple-deep)}
 .pdf-modal-ftr{padding:12px 24px;border-top:1px solid var(--border);font-size:11px;color:var(--text-soft);background:var(--white)}
 
+/* HIDE CURSOR ON MOBILE/TOUCH */
+@media(hover:none),(pointer:coarse){
+  #cur,#curl{display:none!important}
+  body{cursor:auto!important}
+}
+
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .75s ease,transform .75s ease}
 .reveal.visible{opacity:1;transform:translateY(0)}
@@ -327,8 +396,9 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
 
 /* RESPONSIVE */
 @media(max-width:1024px){
-  nav,section,footer,.strip{padding-left:28px;padding-right:28px}
-  nav.scrolled{padding-left:28px;padding-right:28px}
+  nav,section,footer,.strip{padding-left:24px;padding-right:24px}
+  nav{padding-top:16px;padding-bottom:16px}
+  nav.scrolled{padding-left:24px;padding-right:24px}
   .nav-links,.nav-cta{display:none}
   .about-wrap,.conf-wrap,.tours-intro,.contact-wrap{grid-template-columns:1fr}
   .srv-cols{grid-template-columns:1fr 1fr}
@@ -336,11 +406,78 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
   .footer-top{grid-template-columns:1fr 1fr}
   .hero-cards{display:none}
   .stats-row{grid-template-columns:1fr 1fr}
+  .about-visual{height:320px}
+  #diving{padding:60px 24px}
+  section{padding:72px 24px}
 }
 @media(max-width:600px){
-  .srv-cols,.tours-grid,.diving-grid,.testi-grid,.footer-top,.stats-row{grid-template-columns:1fr}
-  h1.hero-title{font-size:52px}
+  nav{padding:14px 18px}
+  nav.scrolled{padding:12px 18px}
+  .logo img{width:120px}
+  section{padding:56px 18px}
+  #diving{padding:56px 18px}
+  footer{padding:48px 18px 28px}
+  .strip{padding:14px 18px;gap:28px}
+
+  /* hero */
+  #hero{height:100svh}
+  .hero-content{padding:0 18px;max-width:100%}
+  h1.hero-title{font-size:clamp(40px,11vw,56px);line-height:1}
+  .hero-sub{font-size:14px;margin-bottom:32px}
+  .hero-btns{flex-direction:column;align-items:flex-start;gap:12px}
+  .btn-main,.btn-outline{padding:14px 28px;font-size:12px;width:100%;text-align:center}
+  .hero-scroll{left:18px;bottom:24px}
+
+  /* about */
+  .about-wrap{gap:40px}
+  .about-visual{height:260px}
+  .av-badge{width:120px;height:120px}
+  .av-badge .n{font-size:36px}
+  .stats-row{grid-template-columns:1fr}
+  .stat-box{padding:24px 18px}
+  .stat-n{font-size:44px}
+
+  /* services */
+  .srv-cols{grid-template-columns:1fr}
+  .srv-head{flex-direction:column;gap:16px;align-items:flex-start}
+
+  /* tours */
+  .tours-grid{grid-template-columns:1fr}
+  .tours-intro{gap:24px}
+
+  /* diving */
+  .diving-grid{grid-template-columns:1fr}
+  .div-card{padding:32px 20px}
+
+  /* conferences */
+  .conf-wrap{gap:40px}
+  .conf-vis{height:280px}
+  .conf-center .big{font-size:56px}
+  .conf-features{gap:10px}
+
+  /* testimonials */
+  .testi-grid{grid-template-columns:1fr}
+
+  /* contact */
+  .contact-wrap{gap:40px}
   .form-2col{grid-template-columns:1fr}
+  .pdf-modal-body{padding:28px 18px}
+
+  /* footer */
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  .footer-bottom{flex-direction:column;gap:14px;text-align:center}
+  .footer-lic{width:100%;text-align:center}
+
+  /* misc */
+  h2.sec-title{font-size:clamp(32px,8vw,48px)}
+  .form-2col{grid-template-columns:1fr}
+  .lang-btn{padding:5px 10px;font-size:10px}
+}
+
+/* Extra small phones */
+@media(max-width:380px){
+  h1.hero-title{font-size:38px}
+  .nav-right{gap:6px}
 }
 </style>
 </head>
@@ -522,37 +659,72 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Cairo 4 Nights + Nile Cruise 4 Nights','pdfs/programs/cairo-4n-nile-4n.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Cairo 4 Nights + Nile Cruise 4 Nights" data-es="El Cairo 4 Noches + Crucero por el Nilo 4 Noches">Cairo 4 Nights + Nile Cruise 4 Nights</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Cairo 4N + Nile Cruise 4N + Lake Nasser 3N','pdfs/programs/cairo-nile-lakenasser.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name" data-en="Cairo 4N + Nile Cruise 4N + 03 Nights Lake Nasser" data-es="El Cairo 4N + Crucero Nilo 4N + 03 Noches Lago Nasser">Cairo 4N + Nile Cruise 4N + 03 Nights Lake Nasser</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Cairo 4N + Nile Cruise incl. Abu Simbel Flight','pdfs/programs/cairo-nile-abusimbel.pdf')">
           <div class="srv-item-num">3</div>
           <div class="srv-item-name" data-en="Cairo 4N + Nile Cruise incl. Abu Simbel Flight" data-es="El Cairo 4N + Crucero Nilo incl. Vuelo Abu Simbel">Cairo 4N + Nile Cruise incl. Abu Simbel Flight</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Cairo 4N + Nile Cruise All Inclusive','pdfs/programs/cairo-nile-allinclusive.pdf')">
           <div class="srv-item-num">4</div>
           <div class="srv-item-name" data-en="Cairo 4N + Nile Cruise All Inclusive Tours & Meals" data-es="El Cairo 4N + Crucero Nilo Todo Incluido Tours y Comidas">Cairo 4N + Nile Cruise All Inclusive Tours & Meals</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Cairo à la Carte','pdfs/programs/cairo-alacarte.pdf')">
           <div class="srv-item-num">5</div>
           <div class="srv-item-name" data-en="Cairo à la Carte" data-es="El Cairo a la Carta">Cairo à la Carte</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Cairo 4N + Nile Cruise + 3N Hurghada','pdfs/programs/cairo-nile-hurghada.pdf')">
           <div class="srv-item-num">6</div>
           <div class="srv-item-name" data-en="Cairo 4N + Nile Cruise + 03 Nights Hurghada" data-es="El Cairo 4N + Crucero Nilo + 03 Noches Hurghada">Cairo 4N + Nile Cruise + 03 Nights Hurghada</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Sharm El Sheikh à la Carte','pdfs/programs/sharm-alacarte.pdf')">
           <div class="srv-item-num">7</div>
           <div class="srv-item-name" data-en="Sharm El Sheikh à la Carte" data-es="Sharm El Sheikh a la Carta">Sharm El Sheikh à la Carte</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -575,12 +747,22 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Nile Cruise — Luxor to Aswan','pdfs/nile/nile-cruise.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Nile Cruise (Luxor – Aswan)" data-es="Crucero por el Nilo (Luxor – Asuán)">Nile Cruise (Luxor – Aswan)</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Lake Nasser Cruise','pdfs/nile/lake-nasser.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name" data-en="Lake Nasser Cruise" data-es="Crucero por el Lago Nasser">Lake Nasser Cruise</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -603,37 +785,72 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Hotels in Cairo','pdfs/hotels/cairo.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Cairo" data-es="El Cairo">Cairo</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Sharm El Sheikh','pdfs/hotels/sharm.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name">Sharm El Sheikh</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Hurghada','pdfs/hotels/hurghada.pdf')">
           <div class="srv-item-num">3</div>
           <div class="srv-item-name">Hurghada</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Luxor','pdfs/hotels/luxor.pdf')">
           <div class="srv-item-num">4</div>
           <div class="srv-item-name">Luxor</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Aswan','pdfs/hotels/aswan.pdf')">
           <div class="srv-item-num">5</div>
           <div class="srv-item-name" data-en="Aswan" data-es="Asuán">Aswan</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Alexandria','pdfs/hotels/alexandria.pdf')">
           <div class="srv-item-num">6</div>
           <div class="srv-item-name" data-en="Alexandria" data-es="Alejandría">Alexandria</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotels in Marsa Alam','pdfs/hotels/marsaalam.pdf')">
           <div class="srv-item-num">7</div>
           <div class="srv-item-name" data-en="Marsa Alam" data-es="Marsa Alam">Marsa Alam</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -660,32 +877,62 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Day Excursions — Cairo','pdfs/day/cairo.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Cairo" data-es="El Cairo">Cairo</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Day Excursions — Sharm El Sheikh','pdfs/day/sharm.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name">Sharm El Sheikh</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Day Excursions — Luxor','pdfs/day/luxor.pdf')">
           <div class="srv-item-num">3</div>
           <div class="srv-item-name">Luxor</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Day Excursions — Aswan','pdfs/day/aswan.pdf')">
           <div class="srv-item-num">4</div>
           <div class="srv-item-name" data-en="Aswan" data-es="Asuán">Aswan</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Day Excursions — Hurghada','pdfs/day/hurghada.pdf')">
           <div class="srv-item-num">5</div>
           <div class="srv-item-name">Hurghada</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Day Excursions — Alexandria','pdfs/day/alexandria.pdf')">
           <div class="srv-item-num">6</div>
           <div class="srv-item-name" data-en="Alexandria" data-es="Alejandría">Alexandria</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -708,22 +955,42 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Shore Excursions — Alexandria','pdfs/shore/alexandria.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Alexandria" data-es="Alejandría">Alexandria</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Shore Excursions — Port Said','pdfs/shore/portsaid.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name" data-en="Port Said" data-es="Port Said">Port Said</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Shore Excursions — Safaga','pdfs/shore/safaga.pdf')">
           <div class="srv-item-num">3</div>
           <div class="srv-item-name">Safaga</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Shore Excursions — Sharm El Sheikh','pdfs/shore/sharm.pdf')">
           <div class="srv-item-num">4</div>
           <div class="srv-item-name">Sharm El Sheikh</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -746,17 +1013,32 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
         <div class="srv-item" onclick="openPDF('Diving Cruise — Red Sea','pdfs/diving/cruise.pdf')">
           <div class="srv-item-num">1</div>
           <div class="srv-item-name" data-en="Diving Cruise" data-es="Crucero de Buceo">Diving Cruise</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Hotel + Diving Package','pdfs/diving/hotel-diving.pdf')">
           <div class="srv-item-num">2</div>
           <div class="srv-item-name" data-en="Hotel + Diving" data-es="Hotel + Buceo">Hotel + Diving</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
         <div class="srv-item" onclick="openPDF('Diving Programs','pdfs/diving/programs.pdf')">
           <div class="srv-item-num">3</div>
           <div class="srv-item-name" data-en="Diving Programs" data-es="Programas de Buceo">Diving Programs</div>
-          <div class="srv-item-pdf"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg> PDF</div>
+          <div class="srv-item-actions">
+            <div class="srv-item-badge">
+              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z"/></svg>PDF
+            </div>
+            <span class="srv-item-chevron">›</span>
+          </div>
         </div>
       </div>
     </div>
@@ -926,6 +1208,7 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
          data-es="Si desea consultar o reservar uno de nuestros programas o servicios, por favor complete el formulario y nuestro equipo le responderá en 24 horas.">
         If you want to consult or reserve one of our programs or services, please fill out the form and our team will respond within 24 hours.
       </p>
+      <form action="https://formspree.io/f/mgobojrk" method="POST">
       <div class="form-2col">
         <div class="form-group">
           <label data-en="Name *" data-es="Nombre *">Name *</label>
@@ -958,6 +1241,7 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
       </div>
       <button class="btn-main" style="width:100%;border:none;cursor:pointer;font-family:'Outfit',sans-serif;" data-en="Send Request →" data-es="Enviar Solicitud →">Send Request →</button>
     </div>
+    </form>
     <div class="contact-info reveal d2">
       <div class="ci-item">
         <div class="ci-icon">📍</div>
@@ -1062,11 +1346,14 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
 </div>
 
 <script>
-// ── CURSOR ──
+// ── CURSOR (desktop only) ──
 const cur=document.getElementById('cur'),curl=document.getElementById('curl');
-let mx=0,my=0,lx=0,ly=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-5}px,${my-5}px)`;});
-(function loop(){lx+=(mx-lx)*.1;ly+=(my-ly)*.1;curl.style.transform=`translate(${lx-18}px,${ly-18}px)`;requestAnimationFrame(loop);})();
+const isTouch=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+if(!isTouch){
+  let mx=0,my=0,lx=0,ly=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-5}px,${my-5}px)`;});
+  (function loop(){lx+=(mx-lx)*.1;ly+=(my-ly)*.1;curl.style.transform=`translate(${lx-18}px,${ly-18}px)`;requestAnimationFrame(loop);})();
+}
 
 // ── NAVBAR ──
 const nav=document.getElementById('nav');

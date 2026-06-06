@@ -1212,20 +1212,20 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
       <div class="form-2col">
         <div class="form-group">
           <label data-en="Name *" data-es="Nombre *">Name *</label>
-          <input type="text" data-placeholder-en="Full name" data-placeholder-es="Nombre completo" placeholder="Full name">
+          <input type="text" data-placeholder-en="Full name" data-placeholder-es="Nombre completo" placeholder="Full name" name="name">
         </div>
         <div class="form-group">
           <label data-en="E-mail *" data-es="Correo electrónico *">E-mail *</label>
-          <input type="email" placeholder="your@email.com">
+          <input type="email" placeholder="your@email.com" name="email">
         </div>
       </div>
       <div class="form-group">
         <label data-en="Telephone / Mobile" data-es="Teléfono / Móvil">Telephone / Mobile</label>
-        <input type="text" placeholder="+1 234 567 890">
+        <input type="text" placeholder="+1 234 567 890" name="phone">
       </div>
       <div class="form-group">
         <label data-en="Service" data-es="Servicio">Service</label>
-        <select>
+        <select name="service">
           <option data-en="Classical Egypt Tours" data-es="Tours Clásicos de Egipto">Classical Egypt Tours</option>
           <option data-en="Nile Cruises" data-es="Cruceros por el Nilo">Nile Cruises</option>
           <option data-en="Hotels in Egypt" data-es="Hoteles en Egipto">Hotels in Egypt</option>
@@ -1237,9 +1237,9 @@ footer{background:var(--purple-deep);color:#fff;padding:72px 64px 36px}
       </div>
       <div class="form-group">
         <label data-en="Your Request" data-es="Su Consulta">Your Request</label>
-        <textarea data-placeholder-en="Tell us about your requirements, group size, travel dates..." data-placeholder-es="Cuéntenos sus requisitos, tamaño del grupo, fechas de viaje..." placeholder="Tell us about your requirements, group size, travel dates..."></textarea>
+        <textarea data-placeholder-en="Tell us about your requirements, group size, travel dates..." data-placeholder-es="Cuéntenos sus requisitos, tamaño del grupo, fechas de viaje..." placeholder="Tell us about your requirements, group size, travel dates..." name="message"></textarea>
       </div>
-      <button class="btn-main" style="width:100%;border:none;cursor:pointer;font-family:'Outfit',sans-serif;" data-en="Send Request →" data-es="Enviar Solicitud →">Send Request →</button>
+      <button type="submit" class="btn-main" style="width:100%;border:none;cursor:pointer;font-family:'Outfit',sans-serif;" data-en="Send Request →" data-es="Enviar Solicitud →">Send Request →</button>
     </div>
     </form>
     <div class="contact-info reveal d2">
